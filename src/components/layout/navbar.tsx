@@ -32,7 +32,7 @@ const session = true;
 export function NavBar() {
   return (
     <div className=" shadow-sm border-border border-b">
-      <div className="m-auto h-[50px] w-full items-center justify-between px-6 md:flex max-w-[1300px] ">
+      <div className="m-auto h-12  w-full items-center justify-between px-6 md:flex max-w-[1300px] ">
         <div className="flex items-center gap-20">
           <div >
             <Link className="flex font-semibold gap-0.5 " href='/'>
