@@ -2,10 +2,11 @@ import { Clock, CloudUpload, Component, LogInIcon, Logs, Play } from "lucide-rea
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "../ui/button";
+import { ThemeToggleButton } from "../theme-toggle-button";
 
 export function ProblemTopbar() {
   return (
-    <div className="h-12 bg-accent shadow-sm border-border border-b flex justify-between px-6">
+    <div className="sticky top-0 z-50 h-12   bg-accent/50 border-border border-b  dark:bg-accent/30 shadow-sm  flex justify-between px-6">
       <div className="flex items-center ">
         <Image
           src="/cu-logo.png"
@@ -16,7 +17,7 @@ export function ProblemTopbar() {
         <Separator className="ml-6 h-6" orientation="vertical" />
         <Button variant="ghost"> <Logs /> Problem List </Button>
       </div>
-      <div className="w-full flex justify-center items-center gap-2 mr-10">
+      <div className="w-full flex justify-center items-center gap-2 pr-44">
         <Button className="text-xs " size="sm" variant="outline">
           <Play /> run
         </Button>
@@ -28,7 +29,7 @@ export function ProblemTopbar() {
         </Button>
       </div>
       <div className="flex items-center">
-        end
+        <ThemeToggleButton />
       </div>
     </div>
   )
