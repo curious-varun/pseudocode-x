@@ -1,6 +1,6 @@
 "use client"
-import { Play } from "lucide-react"
 
+import { Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -11,10 +11,6 @@ export default function ProblemPage() {
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={40}>
           <div className="flex h-full flex-col">
-            <div className="border-b p-4">
-              <h1 className="text-xl font-semibold">2. Add Two Numbers</h1>
-              <p className="text-sm text-muted-foreground">Medium</p>
-            </div>
             <Tabs defaultValue="description" className="flex-1">
               <TabsList className="w-full justify-start rounded-none border-b">
                 <TabsTrigger value="description">Description</TabsTrigger>
@@ -23,6 +19,11 @@ export default function ProblemPage() {
               </TabsList>
               <TabsContent value="description" className="p-4">
                 <div className="prose prose-sm dark:prose-invert">
+                  <div className="border-b p-4">
+                    <h1 className="text-xl font-semibold">2. Add Two Numbers</h1>
+                    <p className="text-sm text-muted-foreground">Medium</p>
+                  </div>
+
                   <p>
                     You are given two non-empty linked lists representing two non-negative integers. The digits are
                     stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and

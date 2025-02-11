@@ -1,9 +1,9 @@
-import { ProblemNavbar } from "@/components/layout/problem-navbar";
+import { ProblemTopbar } from "@/components/layout/problem-topbar";
 
 export default function InnerLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <div>
-      <ProblemNavbar />
+      <ProblemTopbar />
       {children}
     </div>
   );
