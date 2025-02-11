@@ -1,10 +1,11 @@
 import { ThemeToggleButton } from "@/components/theme-toggle-button";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <>
-      this is the Landing page
-    </>
+    <div className="p-8">
+      <Link href='problemset'> problem set </Link>
+    </div>
   );
 }
 

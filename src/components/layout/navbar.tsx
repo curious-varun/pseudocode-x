@@ -24,7 +24,7 @@ export const navbarLinks: NavBarLinkType[] = [
   { title: "Contest", url: "/contest" },
 ];
 
-
+//TODO: implement the acutal auth logic here
 const session = true;
 
 
@@ -34,14 +34,16 @@ export function NavBar() {
     <div className=" shadow-sm border-border border-b">
       <div className="m-auto h-[50px] w-full items-center justify-between px-6 md:flex max-w-[1300px] ">
         <div className="flex items-center gap-20">
-          <div className="flex font-semibold">
-            <Image
-              src="/cu-logo.png"
-              alt="logo-image"
-              width={24}
-              height={25}
-            />
-            <p className="mt-"> Do-code </p>
+          <div >
+            <Link className="flex font-semibold gap-0.5 " href='/'>
+              <Image
+                src="/cu-logo.png"
+                alt="logo-image"
+                width={25}
+                height={25}
+              />
+              <p className="mt-"> Do-code </p>
+            </Link>
           </div>
           <div className="flex items-center ">
             {navbarLinks.map((link) => { return (<Link href={link.url} key={link.url}><Button variant="ghost" className=" hover:font-bold "> {link.title}</Button> </Link>) })}

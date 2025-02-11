@@ -5,64 +5,57 @@ x-logging:
   logging:
     driver: json-file
     options:
-      max-size: 100M
+      max-size: "100M"
 
 services:
   server:
     image: judge0/judge0:latest
-    environment:
-      - DB_NAME=judge0
-      - DB_USER=judge0
-      - DB_PASSWORD=judge0
-      - DB_HOST=db
-      - DB_PORT=5432
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=your_redis_password
+    container_name: judge0-server
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
     ports:
       - "2358:2358"
     privileged: true
     <<: *default-logging
     restart: always
+    depends_on:
+      - db
+      - redis
 
   worker:
     image: judge0/judge0:latest
+    container_name: judge0-worker
     command: ["./scripts/workers"]
-    environment:
-      - DB_NAME=judge0
-      - DB_USER=judge0
-      - DB_PASSWORD=judge0
-      - DB_HOST=db
-      - DB_PORT=5432
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=your_redis_password
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
     privileged: true
     <<: *default-logging
     restart: always
+    depends_on:
+      - server
+      - db
+      - redis
 
   db:
     image: postgres:16.2
-    environment:
-      - POSTGRES_DB=judge0
-      - POSTGRES_USER=judge0
-      - POSTGRES_PASSWORD=judge0
+    container_name: judge0-db
+    env_file: judge0.conf
     volumes:
-      - data:/var/lib/postgresql/data/
+      - db_data:/var/lib/postgresql/data/
     <<: *default-logging
     restart: always
 
   redis:
     image: redis:7.2.4
+    container_name: judge0-redis
     command: [
       "bash", "-c",
-      'docker-entrypoint.sh --appendonly no --requirepass "your_redis_password"'
+      'docker-entrypoint.sh --appendonly no --requirepass "$$REDIS_PASSWORD"'
     ]
-    environment:
-      - REDIS_PASSWORD=your_redis_password
+    env_file: judge0.conf
     <<: *default-logging
     restart: always
 
 volumes:
-  data:
+  db_data:
 
