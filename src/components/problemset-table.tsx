@@ -22,7 +22,7 @@ export const problemColumns: ColumnDef<getAllProblemType>[] = [
     accessorKey: "difficulty",
     header: "Difficulty",
     cell: ({ row }) => {
-      const difficulty = row.original.dificulty?.toLowerCase() || "";
+      const difficulty = row.original.difficulty?.toLowerCase() || "";
       const color =
         difficulty === "easy"
           ? "text-[#00b8a3]"

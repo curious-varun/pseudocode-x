@@ -18,8 +18,8 @@ model Problem {
   id          String     @id @default(cuid())
   title       String     @unique
   description String
-  dificulty   String
-  testCase    TestCase[]
+  difficulty  String
+  testCases   TestCase[] // Changed `testCase` to `testCases` for consistency
 }
 
 model TestCase {
@@ -30,3 +30,4 @@ model TestCase {
   problem   Problem @relation(fields: [problemId], references: [id])
   problemId String
 }
+

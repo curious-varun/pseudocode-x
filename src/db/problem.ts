@@ -6,7 +6,7 @@ export type getAllProblemType = Prisma.ProblemGetPayload<{
   select: {
     id: true,
     title: true,
-    dificulty: true,
+    difficulty: true
   },
 }>
 export async function getAllProblem() {
@@ -15,9 +15,12 @@ export async function getAllProblem() {
       select: {
         id: true,
         title: true,
-        dificulty: true,
+        difficulty: true,
       },
     }
   );
 }
 
+export async function getProblemByTitle() {
+
+} 
