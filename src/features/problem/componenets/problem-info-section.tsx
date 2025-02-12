@@ -1,24 +1,40 @@
 "use client";
 import React from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import MarkdownRenderer from "@/components/markdown-renderer";
+import { Varela_Round } from "next/font/google";
+
 
 const markdownContent = `
 # Hello, Next.js!
-This is a **bold** text.
+### un 
+# varun 
+This is a simple Markdown renderer.
+\`\`\`js
+console.log("Hello, Markdown!");
+\`\`\`
 
-- List Item 1
-- List Item 2
+## Features
+  - ** Bold **, _italic_, and ~~strikethrough~~.
+- Lists, tables, and links:
+  
+| Name | Age |
+| -------| -----|
+| John | 25 |
+| Alice | 30 |
 
-[Google](https://google.com)
+  - ✅ Task lists:
+-[x] Complete setup
+  - [] Write more Markdown
+
+\`Inline code\` and code blocks:
+
 `;
-
 
 
 export function ProblemInfoSection() {
   return (
     <div className="prose">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdownContent}</ReactMarkdown>
+      <MarkdownRenderer content={markdownContent} />
     </div>
   );
 };
