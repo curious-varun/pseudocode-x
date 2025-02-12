@@ -68,11 +68,10 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
   return (
     <div>
       <div className="flex items-center py-4">
-
         <DataTableSearch columns={columns} table={table} />
         <DataTableViewOptions table={table} />
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md ">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -116,7 +115,6 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
     </div >
   )
 }
