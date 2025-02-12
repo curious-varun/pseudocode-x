@@ -11,6 +11,9 @@ export const { auth, handlers } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
     // Store user in DB if not exists
     async signIn({ user }) {
@@ -25,7 +28,6 @@ export const { auth, handlers } = NextAuth({
               email: user.email!,
               name: user.name!,
               image: user.image!,
-              role: "user",
             },
           })
         }
@@ -37,9 +39,16 @@ export const { auth, handlers } = NextAuth({
       }
     },
 
-    // Protect Routes: Public & Private
     authorized: async ({ auth, request }) => {
       const { nextUrl } = request
+      if (
+        nextUrl.pathname.startsWith("/_next/") || // Next.js static files
+        nextUrl.pathname.startsWith("/favicon.ico") || // Favicon
+        nextUrl.pathname.startsWith("/public/") || // Public folder assets
+        nextUrl.pathname.startsWith("/api/auth/") // Allow NextAuth API routes
+      ) {
+        return true
+      }
 
       // Define public routes (accessible without login)
       const publicRoutes = ['/']
@@ -53,5 +62,6 @@ export const { auth, handlers } = NextAuth({
       return !!auth
     },
   },
+
 })
 
