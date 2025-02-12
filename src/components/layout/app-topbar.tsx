@@ -25,7 +25,7 @@ export function TopBar() {
   return (
     <div className="">
       <div className="mx-auto max-w-[1300px] ">
-        <div className="h-10  flex items-center justify-between px-6 py-3 backdrop-blur-sm">
+        <div className="h-10  flex items-center justify-between mt-0.5 px-6 py-3 backdrop-blur-sm">
           <Link className="flex font-semibold gap-0.5 " href='/'>
             <Image
               src="/cu-logo.png"
