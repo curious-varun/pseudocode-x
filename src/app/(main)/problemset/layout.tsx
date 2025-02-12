@@ -11,15 +11,6 @@ export default function ProblemSetLayout({ children }: { children: React.ReactNo
 
       <div className="col-span-3 flex flex-col gap-4">
         <LeaderboardDemo />
-
-        <div className="bg-accent p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold">Upcoming Contests</h2>
-          <p> one </p>
-          <p> one </p>
-          <p> one </p>
-          <p> one </p>
-          <p> one </p>
-        </div>
       </div>
     </div>
   );
