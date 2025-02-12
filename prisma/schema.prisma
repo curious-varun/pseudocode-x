@@ -8,9 +8,24 @@ datasource db {
 }
 
 model User {
-  id            String  @id @default(cuid())
-  email         String  @unique
-  name          String?
-  image         String?
+  id    String  @id @default(cuid())
+  email String  @unique
+  name  String?
+  image String?
 }
 
+model Problem {
+  id          String     @id @default(cuid())
+  title       String     @unique
+  description String
+  testCase    TestCase[]
+}
+
+model TestCase {
+  id        String  @id @default(cuid())
+  inputs    String
+  output    String
+  isPublic Boolean  @default(false) 
+  problem   Problem @relation(fields: [problemId], references: [id])
+  problemId String
+}
