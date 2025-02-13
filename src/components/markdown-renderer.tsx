@@ -11,7 +11,7 @@ type MarkdownRendererProps = {
 export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
     <div className="prose max-w-3xl mx-auto p-4">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+      <ReactMarkdown className="" remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
     </div>
   );
 }
