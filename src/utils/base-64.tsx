@@ -6,16 +6,16 @@ export type ProblemWithTestCases = Prisma.ProblemGetPayload<{
 
 export type TransformedCase = {
   language_id: number;
-  Source_code: string;
+  source_code: string;
   stdin: string;
   expected_output: string;
 };
 
 
-export function transformTestCases(problem: ProblemWithTestCases, sourceCode: string, languageId: number): TransformedCase[] {
+export function transformTestCases(problem: ProblemWithTestCases, source_code: string, languageId: number): TransformedCase[] {
   return problem.testCases.map(({ input, output }) => ({
     language_id: languageId,
-    Source_code: stringToBase64(sourceCode),
+    source_code: stringToBase64(source_code),
     stdin: stringToBase64(input),
     expected_output: stringToBase64(output),
   }));

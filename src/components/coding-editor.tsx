@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect, useCallback } from "react"
 import { Editor } from "@monaco-editor/react"
 import ChatWidget from "./chat-widget"
@@ -7,8 +6,6 @@ import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSubmission } from "@/context/problem-context"
 import axios from "axios"
-
-
 
 const languages = [
   { value: "cpp", label: "C++", language_id: 76 },
@@ -24,6 +21,7 @@ export function CodingEditor() {
   const [language, setLanguage] = useState("cpp")
   const [code, setCode] = useState(defaultCode.cpp)
   const { registerSubmit } = useSubmission()
+
   const handleEditorChange = useCallback((value: string | undefined) => {
     setCode(value || "")
   }, [])
@@ -33,14 +31,17 @@ export function CodingEditor() {
     setCode(defaultCode[value as keyof typeof defaultCode])
   }, [])
 
-
-
   const handleSubmit = useCallback(async () => {
     try {
+      const selectedLang = languages.find(lang => lang.value === language);
+      if (!selectedLang) {
+        throw new Error('Invalid language selected');
+      }
+
       const response = await axios.post('/api/submissions', {
         source_code: code,
         problem_id: 'two-sum',
-        language_id: 75
+        language_id: selectedLang.language_id
       });
 
       const { verdict, results } = response.data;
@@ -73,29 +74,32 @@ export function CodingEditor() {
       }
       console.error('Submission error:', error);
     }
-  }, [code]);
+  }, [code, language]);
 
   useEffect(() => {
     registerSubmit(handleSubmit)
   }, [registerSubmit, handleSubmit])
 
   return (
-    <div className="flex flex-col space-y-4 ">
-      <div className="flex px-2 ">
+    <div className="flex flex-col space-y-4">
+      <div className="flex px-2">
         <Select value={language} onValueChange={handleLanguageChange}>
-          <SelectTrigger className="mx-4 z-10 text-xs h-7 py-0.5 w-28 ">
+          <SelectTrigger className="mx-4 z-10 text-xs h-7 py-0.5 w-28">
             <SelectValue placeholder="Select language" />
           </SelectTrigger>
-          <SelectContent className="w-28 text-xs gap-2 ">
+          <SelectContent className="w-28 text-xs gap-2">
             {languages.map((lang) => (
-              <SelectItem className="text-xs h-6 flex items-center" key={lang.value} value={lang.value}>
+              <SelectItem
+                className="text-xs h-6 flex items-center"
+                key={lang.value}
+                value={lang.value}
+              >
                 {lang.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
-
       <Editor
         className="h-[calc(100vh-3rem)]"
         language={language}
@@ -111,10 +115,7 @@ export function CodingEditor() {
           automaticLayout: true,
         }}
       />
-
       <ChatWidget />
     </div>
   )
 }
-
-
