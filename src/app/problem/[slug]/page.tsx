@@ -1,4 +1,5 @@
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import ChatWidget from "@/components/chat-widget";
 import { getProblemWithTestCaseById, GetProblemWithTestCaseByIdType } from "@/db/problem";
 import { notFound } from "next/navigation";
 import {
@@ -20,6 +21,7 @@ export default async function ProblemPage({ params }: { params: { slug: string }
 
   return (
     <div className="px-6 h-[calc(100vh-3rem)] ">
+      <ChatWidget />
       <ResizablePanelGroup direction="horizontal" className="pt-1">
         <ResizablePanel maxSize={50} minSize={20}>
           <Tabs defaultValue="description" className="flex-1">

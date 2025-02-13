@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { Editor } from "@monaco-editor/react"
+import ChatWidget from "./chat-widget"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSubmission } from "@/context/problem-context"
 import axios from "axios"
@@ -84,6 +85,8 @@ export function CodingEditor() {
           automaticLayout: true,
         }}
       />
+
+      <ChatWidget />
     </div>
   )
 }
