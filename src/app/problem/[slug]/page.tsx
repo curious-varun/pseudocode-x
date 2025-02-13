@@ -8,6 +8,8 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import MarkdownRenderer from "@/components/markdown-renderer";
+import { CodingEditor } from "@/features/problem/components/coding-editor";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function ProblemPage({ params }: { params: { slug: string } }) {
   const data = await getProblemWithTestCaseById(params.slug);
@@ -20,7 +22,7 @@ export default async function ProblemPage({ params }: { params: { slug: string }
   return (
     <div className="px-6 h-[calc(100vh-3rem)] ">
       <ResizablePanelGroup direction="horizontal" className="pt-1">
-        <ResizablePanel>
+        <ResizablePanel maxSize={50} minSize={20}>
           <Tabs defaultValue="description" className="flex-1">
             <TabsList className=" w-full justify-start gap-2">
               <TabsTrigger className="text-xs" value="description">Description</TabsTrigger>
@@ -46,15 +48,15 @@ export default async function ProblemPage({ params }: { params: { slug: string }
               <TabsTrigger className="text-xs" value="submissinos">submissinos</TabsTrigger>
             </TabsList>
             <TabsContent value="code">
-              code
+              <CodingEditor />
             </TabsContent>
             <TabsContent value="submissinos">
               submissinos
             </TabsContent>
           </Tabs>
         </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
+      </ResizablePanelGroup >
+    </div >
   );
 }
 
