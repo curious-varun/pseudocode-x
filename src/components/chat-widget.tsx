@@ -21,7 +21,7 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false); // State to toggle chat widget visibility
   const { messages, input, handleInputChange, handleSubmit } = useChat(); // Chat hook for handling messages and input
 
-  const suggestions = ["What should be the apprach to solve this problem ? ", "what am i doing wrong in code ? "]; // Predefined suggestions for quick input
+  const suggestions = ["What is the apprach to solve this problem ? ", "what am i doing wrong in code ? "]; // Predefined suggestions for quick input
 
   return (
     <>
