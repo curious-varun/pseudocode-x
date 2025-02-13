@@ -40,7 +40,7 @@ export default async function ProblemPage({ params }: { params: { slug: string }
           </Tabs>
         </ResizablePanel>
         <ResizableHandle className="mx-3 hover:bg-blue-600  h-[calc(100vh-18rem)] my-auto" withHandle />
-        <ResizablePanel>
+        <ResizablePanel minSize={60}>
           <Tabs defaultValue="code" className="flex-1">
             <TabsList className=" w-full justify-start gap-2">
               <TabsTrigger className="text-xs" value="code"> code </TabsTrigger>

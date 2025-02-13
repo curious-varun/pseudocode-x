@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { Editor } from "@monaco-editor/react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSubmission } from "@/context/problem-context"
-import { toast } from "sonner"
+import axios from "axios"
 
 
 
@@ -32,9 +32,20 @@ export function CodingEditor() {
     setCode(defaultCode[value as keyof typeof defaultCode])
   }, [])
 
-  const handleSubmit = useCallback(() => {
-    toast.success("Accepteddd ");
-    toast.error("Rejected");
+  const handleSubmit = useCallback(async () => {
+    const language_id = 76;
+
+    const response = await axios.post("/api/useSubmission/", {
+      code,
+      languageId: 76,
+      problemId: "two-sum",
+    });
+
+
+    console.log(response);
+    alert(code)
+
+
   }, [code])
 
   useEffect(() => {
