@@ -8,8 +8,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import MarkdownRenderer from "@/components/markdown-renderer";
-import { CodingEditor } from "@/features/problem/components/coding-editor";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { CodingEditor } from "@/components/coding-editor";
 
 export default async function ProblemPage({ params }: { params: { slug: string } }) {
   const data = await getProblemWithTestCaseById(params.slug);
