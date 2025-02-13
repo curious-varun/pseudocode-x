@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { ThemeToggleButton } from "../theme-toggle-button";
 import { signIn, signOut } from "next-auth/react";
 
 interface UserAvatarMenuProps {
