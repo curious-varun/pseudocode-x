@@ -18,11 +18,42 @@ export async function getAllProblem(): Promise<GetAllProblemType[]> {
   });
 }
 
-export type GetProblemDescriptionType = Prisma.ProblemGetPayload<{ select: { description: true; }; }>;
-export async function getProblemDescriptionById(id: string): Promise<GetProblemDescriptionType | null> {
+export type GetProblemWithTestCaseByIdType = Prisma.ProblemGetPayload<{
+  select: {
+    difficulty: true;
+    title: true;
+    description: true;
+    testCases: {
+      select: {
+        id: true;
+        inputs: true;
+        output: true;
+      };
+      where: {
+        isPublic: true;
+      };
+    };
+  };
+}>;
+
+export async function getProblemWithTestCaseById(id: string): Promise<GetProblemWithTestCaseByIdType | null> {
   return await db.problem.findUnique({
     where: { id },
-    select: { description: true },
+    select: {
+      difficulty: true,
+      title: true,
+      description: true,
+      testCases: {
+        select: {
+          id: true,
+          inputs: true,
+          output: true,
+        },
+        where: {
+          isPublic: true,
+        },
+      },
+    },
   });
 }
 
