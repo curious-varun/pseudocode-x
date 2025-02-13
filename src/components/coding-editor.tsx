@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { Editor } from "@monaco-editor/react"
 import ChatWidget from "./chat-widget"
+import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSubmission } from "@/context/problem-context"
 import axios from "axios"
@@ -10,8 +11,8 @@ import axios from "axios"
 
 
 const languages = [
-  { value: "cpp", label: "C++" },
-  { value: "rust", label: "Rust" },
+  { value: "cpp", label: "C++", language_id: 76 },
+  { value: "rust", label: "Rust", language_id: 73 },
 ]
 
 const defaultCode = {
@@ -23,7 +24,6 @@ export function CodingEditor() {
   const [language, setLanguage] = useState("cpp")
   const [code, setCode] = useState(defaultCode.cpp)
   const { registerSubmit } = useSubmission()
-  // what is doing 
   const handleEditorChange = useCallback((value: string | undefined) => {
     setCode(value || "")
   }, [])
@@ -33,21 +33,47 @@ export function CodingEditor() {
     setCode(defaultCode[value as keyof typeof defaultCode])
   }, [])
 
+
+
   const handleSubmit = useCallback(async () => {
-    const language_id = 76;
+    try {
+      const response = await axios.post('/api/submissions', {
+        source_code: code,
+        problem_id: 'two-sum',
+        language_id: 75
+      });
 
-    const response = await axios.post("/api/useSubmission/", {
-      code,
-      languageId: 76,
-      problemId: "two-sum",
-    });
+      const { verdict, results } = response.data;
 
-
-    console.log(response);
-    alert(code)
-
-
-  }, [code])
+      if (verdict === 'Accepted') {
+        toast.success('All test cases passed! 🎉', {
+          description: 'Your solution has been accepted.'
+        });
+      } else {
+        // Show details of failed test cases
+        toast.error('Some test cases failed', {
+          description: results
+            .filter((r: { status: string }) => r.status !== 'Accepted')
+            .map((r: { compile_output: string; stderr: string }) =>
+              r.compile_output || r.stderr || 'Wrong answer'
+            )
+            .join('\n')
+        });
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.error || 'Failed to submit code';
+        toast.error('Submission failed', {
+          description: errorMessage
+        });
+      } else {
+        toast.error('Submission failed', {
+          description: 'An unexpected error occurred'
+        });
+      }
+      console.error('Submission error:', error);
+    }
+  }, [code]);
 
   useEffect(() => {
     registerSubmit(handleSubmit)

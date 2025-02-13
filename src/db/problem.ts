@@ -26,7 +26,7 @@ export type GetProblemWithTestCaseByIdType = Prisma.ProblemGetPayload<{
     testCases: {
       select: {
         id: true;
-        inputs: true;
+        input: true;
         output: true;
       };
       where: {
@@ -46,7 +46,7 @@ export async function getProblemWithTestCaseById(id: string): Promise<GetProblem
       testCases: {
         select: {
           id: true,
-          inputs: true,
+          input: true,
           output: true,
         },
         where: {

@@ -13,10 +13,10 @@ export type TransformedCase = {
 
 
 export function transformTestCases(problem: ProblemWithTestCases, sourceCode: string, languageId: number): TransformedCase[] {
-  return problem.testCases.map(({ inputs, output }) => ({
+  return problem.testCases.map(({ input, output }) => ({
     language_id: languageId,
     Source_code: stringToBase64(sourceCode),
-    stdin: stringToBase64(inputs),
+    stdin: stringToBase64(input),
     expected_output: stringToBase64(output),
   }));
 }
