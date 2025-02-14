@@ -12,9 +12,17 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
-  const { messages, input, handleInputChange, handleSubmit } = useChat()
 
-  const suggestions = ["What is the approach to solve this problem?", "What am I doing wrong in my code?"]
+  // Update useChat to use our new Gemini API endpoint
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: '/api/chat-gemini',  // Point to our new API route
+    initialMessages: []
+  })
+
+  const suggestions = [
+    "What is the approach to solve this problem?",
+    "What am I doing wrong in my code?"
+  ]
 
   return (
     <>
@@ -35,7 +43,12 @@ export default function ChatWidget() {
       {isOpen && (
         <div className="fixed bottom-20 right-4 z-50 w-[380px] max-w-[calc(100vw-2rem)]">
           <Card className="relative">
-            <Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsOpen(false)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-2"
+              onClick={() => setIsOpen(false)}
+            >
               <X className="h-4 w-4" />
             </Button>
 
@@ -57,7 +70,9 @@ export default function ChatWidget() {
                         variant="outline"
                         className="h-auto whitespace-normal p-4 text-center"
                         onClick={() => {
-                          handleInputChange({ target: { value: suggestion } } as React.ChangeEvent<HTMLInputElement>)
+                          handleInputChange({
+                            target: { value: suggestion }
+                          } as React.ChangeEvent<HTMLInputElement>)
                           handleSubmit(new Event("submit") as unknown as React.FormEvent<HTMLFormElement>)
                         }}
                       >
@@ -70,10 +85,13 @@ export default function ChatWidget() {
                     {messages.map((message) => (
                       <div
                         key={message.id}
-                        className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                        className={`flex ${message.role === "user" ? "justify-end" : "justify-start"
+                          }`}
                       >
                         <div
-                          className={`rounded-lg px-3 py-2 max-w-[80%] ${message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
+                          className={`rounded-lg px-3 py-2 max-w-[80%] ${message.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted"
                             }`}
                         >
                           {message.content}
@@ -85,7 +103,12 @@ export default function ChatWidget() {
               </ScrollArea>
 
               <form onSubmit={handleSubmit} className="mt-4 flex items-center space-x-2">
-                <Input value={input} onChange={handleInputChange} placeholder="Write a message..." className="flex-1" />
+                <Input
+                  value={input}
+                  onChange={handleInputChange}
+                  placeholder="Write a message..."
+                  className="flex-1"
+                />
                 <Button type="submit" size="icon" className="shrink-0">
                   <Send className="h-5 w-5" />
                 </Button>
@@ -97,5 +120,3 @@ export default function ChatWidget() {
     </>
   )
 }
-
-

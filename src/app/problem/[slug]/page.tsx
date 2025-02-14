@@ -1,5 +1,5 @@
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import ChatWidget from "@/components/chat-widget";
+import ChatWidget from "@/components/chat-widget-gemini";
 import { getProblemWithTestCaseById, GetProblemWithTestCaseByIdType } from "@/db/problem";
 import { notFound } from "next/navigation";
 import {
