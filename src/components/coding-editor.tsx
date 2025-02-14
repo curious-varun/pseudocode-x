@@ -17,7 +17,7 @@ const defaultCode = {
   rust: 'fn main() {\n    println!("Hello, World!");\n}',
 }
 
-export function CodingEditor() {
+export function CodingEditor(description: string) {
   const [language, setLanguage] = useState("cpp")
   const [code, setCode] = useState(defaultCode.cpp)
   const { registerSubmit } = useSubmission()
@@ -115,7 +115,7 @@ export function CodingEditor() {
           automaticLayout: true,
         }}
       />
-      <ChatWidget />
+      <ChatWidget description={description} code={code} />
     </div>
   )
 }

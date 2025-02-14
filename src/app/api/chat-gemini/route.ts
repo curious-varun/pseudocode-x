@@ -1,66 +1,17 @@
-import { NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { NextRequest, NextResponse } from "next/server";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json();
+    const body = await req.json();
+    const { description, code, message } = body;
 
-    const chat = genAI.getGenerativeModel({ model: "gemini-pro" }).startChat();
-    const response = await chat.sendMessage(messages);
-    const aiMessage = response.response.text();
+    if (!message) return NextResponse.json({ error: "Message is required" }, { status: 400 });
 
-    return NextResponse.json({ id: Date.now().toString(), role: "assistant", content: aiMessage });
+
+    return NextResponse.json({ response: "You can prevent any hover behavior on this element by using the pointer-events-none class from Tailwind CSS. This ensures that the element does not respond to hover interactions." });
+
   } catch (error) {
-    return NextResponse.json({ error: "Something went wrong!" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-
 }
-
-
-
-
-
-
-
-
-
-// import { GoogleGenerativeAI } from "@google/generative-ai";
-// import { NextResponse } from "next/server";
-//
-// // Initialize Gemini AI
-// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-// const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-//
-// export async function POST(req: Request) {
-//   return NextResponse.json({
-//     role: 'assistant',
-//     content: "hi there this is the init message "
-//   });
-//
-//   // try {
-//   //   const { messages } = await req.json();
-//   //
-//   //   // Get the last message content as the prompt
-//   //   const lastMessage = messages[messages.length - 1];
-//   //
-//   //   // Generate content using Gemini
-//   //   const result = await model.generateContent(lastMessage.content);
-//   //   const response = await result.response;
-//   //   const text = response.text();
-//   //
-//   //   // Return response directly without streaming
-//   //   return NextResponse.json({
-//   //     role: 'assistant',
-//   //     content: text
-//   //   });
-//   //
-//   // } catch (error) {
-//   //   console.error(error);
-//   //   return NextResponse.json({ error: "Error processing your request" }, { status: 500 });
-//   // }
-// }
-//
-
 
