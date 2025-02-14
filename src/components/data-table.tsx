@@ -57,7 +57,7 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
   return (
     <div>
       <div className="flex items-center py-4">
-        <DataTableSearch columns={columns} table={table} />
+        <DataTableSearch table={table} />
         <DataTableViewOptions table={table} />
       </div>
       <div className="rounded-md ">
@@ -82,11 +82,11 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, index) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                >
+                  className={index % 2 === 1 ? "bg-accent/80 " : ""}                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -102,6 +102,7 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
               </TableRow>
             )}
           </TableBody>
+
         </Table>
       </div>
     </div >

@@ -19,9 +19,9 @@ export function DataTableSearch<TData>({
   return (
     <div className="flex items-center">
       <Input
-        placeholder="Search problems by title..."
+        placeholder="seach problem by title"
         onChange={handleSearchChange}
-        className="max-w-sm"
+        className="max-w-sm "
       />
     </div>
   )

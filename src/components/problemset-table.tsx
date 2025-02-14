@@ -62,7 +62,9 @@ export const problemColumns: ColumnDef<GetAllProblemType>[] = [
 export function ProblemSetTable({ problems }: { problems: GetAllProblemType[] }) {
   return (
     <div>
-      <DataTable columns={problemColumns} data={problems} />
+      <DataTable
+        columns={problemColumns}
+        data={problems} />
     </div>
   );
 }
