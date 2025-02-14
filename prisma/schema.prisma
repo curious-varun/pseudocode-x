@@ -8,12 +8,15 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(cuid())
-  email      String       @unique
-  username   String       @unique
-  name       String?
-  image      String?
-  Submission Submission[]
+  id                 String               @id @default(cuid())
+  email              String               @unique
+  username           String               @unique
+  name               String?
+  image              String?
+  Submission         Submission[]
+  CodeQuestSolutions CodeQuestSolutions[]
+  CodeQuest          CodeQuest[]
+  Points             Int
 
   leetcodeUsername   String?
   codeforcesUsername String?
@@ -27,11 +30,14 @@ model Problem {
   difficulty  String
   testCases   TestCase[]
   Submission  Submission[]
+  Contest     Contest?     @relation(fields: [contestId], references: [id])
+  contestId   String?
+  Point       String?
 }
 
 model TestCase {
-  id        String  @id @default(cuid())
   input     String
+  id        String  @id @default(cuid())
   output    String
   isPublic  Boolean @default(false)
   problem   Problem @relation(fields: [problemId], references: [id])
@@ -46,4 +52,32 @@ model Submission {
   problemId  String
   sourceCode String
   verdict    String
+}
+
+model Contest {
+  id          String    @id @default(cuid())
+  title       String
+  banner      String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  problems    Problem[]
+}
+
+model CodeQuest {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  createdBy   User     @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model CodeQuestSolutions {
+  id          String @id @default(cuid())
+  gitRepoLink String @unique
+  description String
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
 }
