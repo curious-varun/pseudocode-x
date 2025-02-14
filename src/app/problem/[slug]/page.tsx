@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tabs"
 import MarkdownRenderer from "@/components/markdown-renderer";
 import { CodingEditor } from "@/components/coding-editor";
+import { RenderSolution } from "@/components/render-solution";
 
 export default async function ProblemPage({ params }: { params: { slug: string } }) {
   const data = await getProblemWithTestCaseById(params.slug);
@@ -26,14 +27,16 @@ export default async function ProblemPage({ params }: { params: { slug: string }
           <Tabs defaultValue="description" className="flex-1">
             <TabsList className=" w-full justify-start gap-2">
               <TabsTrigger className="text-xs" value="description">Description</TabsTrigger>
-              <TabsTrigger className="text-xs" value="solution">Solution</TabsTrigger>
+              <TabsTrigger className="text-xs" value="solution">
+                solution
+              </TabsTrigger>
               <TabsTrigger className="text-xs" value="discussion">discussion</TabsTrigger>
             </TabsList>
             <TabsContent value="description">
               <MarkdownRenderer content={description.replace(/\\n/g, "\n")} />
             </TabsContent>
             <TabsContent value="solution">
-              solution
+              <RenderSolution problemId={"two-sum"} />
             </TabsContent>
             <TabsContent value="discussion">
               discussion

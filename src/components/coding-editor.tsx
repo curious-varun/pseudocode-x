@@ -20,6 +20,7 @@ const defaultCode = {
 export function CodingEditor(description: string) {
   const [language, setLanguage] = useState("cpp")
   const [code, setCode] = useState(defaultCode.cpp)
+  const [tries, setTries] = useState(0);
   const { registerSubmit } = useSubmission()
 
   const handleEditorChange = useCallback((value: string | undefined) => {
@@ -32,48 +33,9 @@ export function CodingEditor(description: string) {
   }, [])
 
   const handleSubmit = useCallback(async () => {
-    try {
-      const selectedLang = languages.find(lang => lang.value === language);
-      if (!selectedLang) {
-        throw new Error('Invalid language selected');
-      }
+    setTries(prev => prev + 1);
+    alert(code);
 
-      const response = await axios.post('/api/submissions', {
-        source_code: code,
-        problem_id: 'two-sum',
-        language_id: selectedLang.language_id
-      });
-
-      const { verdict, results } = response.data;
-
-      if (verdict === 'Accepted') {
-        toast.success('All test cases passed! 🎉', {
-          description: 'Your solution has been accepted.'
-        });
-      } else {
-        // Show details of failed test cases
-        toast.error('Some test cases failed', {
-          description: results
-            .filter((r: { status: string }) => r.status !== 'Accepted')
-            .map((r: { compile_output: string; stderr: string }) =>
-              r.compile_output || r.stderr || 'Wrong answer'
-            )
-            .join('\n')
-        });
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.error || 'Failed to submit code';
-        toast.error('Submission failed', {
-          description: errorMessage
-        });
-      } else {
-        toast.error('Submission failed', {
-          description: 'An unexpected error occurred'
-        });
-      }
-      console.error('Submission error:', error);
-    }
   }, [code, language]);
 
   useEffect(() => {
@@ -115,7 +77,7 @@ export function CodingEditor(description: string) {
           automaticLayout: true,
         }}
       />
-      <ChatWidget description={description} code={code} />
+      {tries > 2 && <ChatWidget description={description} code={code} />}
     </div>
   )
 }

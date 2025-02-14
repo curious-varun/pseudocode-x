@@ -13,14 +13,13 @@ model User {
   username           String               @unique
   name               String?
   image              String?
-  Submission         Submission[]
-  CodeQuestSolutions CodeQuestSolutions[]
-  CodeQuest          CodeQuest[]
-  Points             Int
-
+  submissions        Submission[]         // Fixed capitalization
+  codeQuestSolutions CodeQuestSolutions[]
+  codeQuests         CodeQuest[]         // Fixed capitalization
+  points             Int                  @default(0)  // Fixed capitalization and added default
   leetcodeUsername   String?
   codeforcesUsername String?
-  githubUsernaem     String?
+  githubUsername     String?
 }
 
 model Problem {
@@ -29,15 +28,16 @@ model Problem {
   description String
   difficulty  String
   testCases   TestCase[]
-  Submission  Submission[]
-  Contest     Contest?     @relation(fields: [contestId], references: [id])
+  submissions Submission[] 
+  contest     Contest?     @relation(fields: [contestId], references: [id])
   contestId   String?
-  Point       String?
+  points      Int?        // Fixed capitalization and type
+  solution    Solution?   // Fixed capitalization
 }
 
 model TestCase {
-  input     String
   id        String  @id @default(cuid())
+  input     String
   output    String
   isPublic  Boolean @default(false)
   problem   Problem @relation(fields: [problemId], references: [id])
@@ -48,7 +48,7 @@ model Submission {
   id         String  @id @default(cuid())
   user       User    @relation(fields: [userId], references: [id])
   userId     String
-  Problem    Problem @relation(fields: [problemId], references: [id])
+  problem    Problem @relation(fields: [problemId], references: [id]) // Fixed capitalization
   problemId  String
   sourceCode String
   verdict    String
@@ -80,4 +80,11 @@ model CodeQuestSolutions {
   description String
   user        User   @relation(fields: [userId], references: [id])
   userId      String
+}
+
+model Solution {
+  id        String  @id @default(cuid())
+  solution  String
+  problem   Problem @relation(fields: [problemId], references: [id])
+  problemId String  @unique
 }
