@@ -15,15 +15,6 @@ import {
   getSortedRowModel,
 } from "@tanstack/react-table"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
 import {
   TableBody,
   Table,
@@ -32,8 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { ArrowRight } from "lucide-react";
-import { DataTablePagination } from "./table/data-table-pagination";
 import { DataTableViewOptions } from "./table/data-table-view-options";
 import { DataTableSearch } from "./table/data-table-serach";
 
