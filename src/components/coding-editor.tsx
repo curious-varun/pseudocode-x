@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect, useCallback } from "react"
 import { Editor } from "@monaco-editor/react"
-import ChatWidget from "./chat-widget"
+import ChatWidget from "./chat-widget-gemini"
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSubmission } from "@/context/problem-context"

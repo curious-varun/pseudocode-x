@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { db as prisma } from '@/db'
+import { generateUsername } from '@/utils/generate-username'
 
 
 export const { auth, handlers } = NextAuth({
@@ -17,14 +18,14 @@ export const { auth, handlers } = NextAuth({
     // Store user in DB if not exists
     async signIn({ user }) {
       try {
-        const existingUser = await prisma.user.findUnique({
-          where: { email: user.email! },
-        })
+        const existingUser = await prisma.user.findUnique({ where: { email: user.email! } })
+        const username = generateUsername(user.email ? user.email : null);
 
         if (!existingUser) {
           await prisma.user.create({
             data: {
               email: user.email!,
+              username,
               name: user.name!,
               image: user.image!,
             },

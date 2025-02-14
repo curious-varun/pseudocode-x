@@ -10,6 +10,7 @@ datasource db {
 model User {
   id         String       @id @default(cuid())
   email      String       @unique
+  username   String       @unique
   name       String?
   image      String?
   Submission Submission[]
@@ -20,13 +21,13 @@ model Problem {
   title       String       @unique
   description String
   difficulty  String
-  testCases   TestCase[] 
+  testCases   TestCase[]
   Submission  Submission[]
 }
 
 model TestCase {
   id        String  @id @default(cuid())
-  input    String
+  input     String
   output    String
   isPublic  Boolean @default(false)
   problem   Problem @relation(fields: [problemId], references: [id])
@@ -40,5 +41,5 @@ model Submission {
   Problem    Problem @relation(fields: [problemId], references: [id])
   problemId  String
   sourceCode String
-  verdict    String 
+  verdict    String
 }

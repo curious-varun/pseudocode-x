@@ -63,23 +63,7 @@ export default function ChatWidget() {
             <CardContent>
               <ScrollArea className="h-[300px] pr-4">
                 {messages.length === 0 ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    {suggestions.map((suggestion) => (
-                      <Button
-                        key={suggestion}
-                        variant="outline"
-                        className="h-auto whitespace-normal p-4 text-center"
-                        onClick={() => {
-                          handleInputChange({
-                            target: { value: suggestion }
-                          } as React.ChangeEvent<HTMLInputElement>)
-                          handleSubmit(new Event("submit") as unknown as React.FormEvent<HTMLFormElement>)
-                        }}
-                      >
-                        {suggestion}
-                      </Button>
-                    ))}
-                  </div>
+                  <> np messages </>
                 ) : (
                   <div className="space-y-4">
                     {messages.map((message) => (
