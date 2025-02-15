@@ -38,7 +38,6 @@ export function TopBar() {
 
           <div className="hidden md:flex items-center space-x-8">
             <NavLink href="/problemset">Problems</NavLink>
-            <NavLink href="/discussion">Discussion</NavLink>
           </div>
 
 
