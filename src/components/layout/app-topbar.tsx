@@ -44,7 +44,7 @@ export function TopBar() {
 
           <div className="flex items-center gap-1">
             {session ? (
-              <UserAvatarMenu imageUrl={session.user?.image || ""} username={session.user?.name || "U"} />
+              <UserAvatarMenu imageUrl={session.user?.image || ""} username={session.user?.email || "U"} />
             ) : (
               <div className="">
                 <Button

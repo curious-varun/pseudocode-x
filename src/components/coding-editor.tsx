@@ -32,15 +32,30 @@ export function CodingEditor(description: string) {
     setCode(defaultCode[value as keyof typeof defaultCode])
   }, [])
 
+
   const handleSubmit = useCallback(async () => {
     setTries(prev => prev + 1);
-    // const response = await axios.post("/api/submissions", {
-    //   language_id: 73,
-    //   source_code: code,
-    //   problem_id: "two-sum"
-    // });
-    alert(code);
 
+    const selectedLanguage = languages.find(lang => lang.value === language);
+    if (!selectedLanguage) {
+      toast("Invalid programming language selected");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/submissions", {
+        language_id: selectedLanguage.language_id,
+        source_code: code,
+        problem_id: "two-sum"
+      });
+
+      toast(response.data.verdict ?? "The judge is busy right now");
+
+    } catch (error) {
+      console.error("Submission error:", error);
+      //@ts-ignore
+      toast("Submission failed: " + (error.response?.data?.error || error.message));
+    }
   }, [code, language]);
 
   useEffect(() => {

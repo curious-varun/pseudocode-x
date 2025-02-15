@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { formatDistanceToNow } from "date-fns"
-import { ChevronRight, ChevronDown } from "lucide-react"
 
 type Submission = {
   id: string
