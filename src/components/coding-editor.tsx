@@ -34,6 +34,11 @@ export function CodingEditor(description: string) {
 
   const handleSubmit = useCallback(async () => {
     setTries(prev => prev + 1);
+    // const response = await axios.post("/api/submissions", {
+    //   language_id: 73,
+    //   source_code: code,
+    //   problem_id: "two-sum"
+    // });
     alert(code);
 
   }, [code, language]);

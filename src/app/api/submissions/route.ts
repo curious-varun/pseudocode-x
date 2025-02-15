@@ -1,17 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import { db } from "@/db";
 import { transformTestCases } from "@/utils/base-64";
+import { db } from "@/db";
 
-// Constants
 const JUDGE0_BASE_URL = process.env.JUDGE0_URL || "http://localhost:2358";
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second
+const RETRY_DELAY = 1000;
 
-// Helper function to delay execution
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Helper function to make fetch requests with retries
 async function fetchWithRetry(url: string, options: RequestInit, retries = MAX_RETRIES) {
   try {
     const response = await fetch(url, options);
@@ -31,9 +27,11 @@ async function fetchWithRetry(url: string, options: RequestInit, retries = MAX_R
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Extract and validate request body
     const body = await req.json();
     const { language_id, problem_id, source_code } = body;
+    console.log("lenguage", language_id);
+    console.log("problem", problem_id);
+    console.log("code", source_code);
 
     if (!language_id || !problem_id || !source_code) {
       return NextResponse.json(
@@ -42,27 +40,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Check authentication
+    // WIP: Check authentication
 
-
-    // 3. Check if Judge0 is available
-    try {
-      const healthCheck = await fetchWithRetry(`${JUDGE0_BASE_URL}/health`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!healthCheck.ok) {
-        console.error("Judge0 health check failed:", await healthCheck.text());
-        throw new Error("Judge0 service is not available");
-      }
-    } catch (error) {
-      console.error("Judge0 health check failed:", error);
-      return NextResponse.json(
-        { error: "Code execution service is currently unavailable" },
-        { status: 503 }
-      );
-    }
 
     // 4. Fetch problem and test cases
     const problem = await db.problem.findUnique({
@@ -79,6 +58,9 @@ export async function POST(req: NextRequest) {
 
     // 5. Transform test cases for Judge0
     try {
+      console.clear();
+      console.log(problem);
+
       const transformedCases = transformTestCases(problem, source_code, language_id);
 
       if (!transformedCases || transformedCases.length === 0) {
@@ -90,7 +72,7 @@ export async function POST(req: NextRequest) {
 
       // 6. Submit batch to Judge0
       const batchSubmissionResponse = await fetchWithRetry(
-        `${JUDGE0_BASE_URL}/submissions/batch`,
+        `${JUDGE0_BASE_URL}/submissions/batch?base64_encoded=true`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

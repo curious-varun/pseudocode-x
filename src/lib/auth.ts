@@ -51,7 +51,7 @@ export const { auth, handlers } = NextAuth({
       }
 
       // Define public routes (accessible without login)
-      const publicRoutes = ['/']
+      const publicRoutes = ['/', '/problemset']
 
       // Allow access to public routes
       if (publicRoutes.includes(nextUrl.pathname)) {
@@ -59,8 +59,7 @@ export const { auth, handlers } = NextAuth({
       }
 
       // Require authentication for all other routes
-      // return !!auth
-      return true;
+      return !!auth
     },
   },
 

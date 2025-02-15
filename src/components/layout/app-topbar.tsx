@@ -23,7 +23,7 @@ interface UserAvatarMenuProps {
 export function TopBar() {
   const { data: session } = useSession();
   return (
-    <div className="">
+    <div className="bg-secondary/80">
       <div className="mx-auto max-w-[1300px] ">
         <div className="h-10  flex items-center justify-between mt-1 px-6 py-3 backdrop-blur-sm">
           <Link className="flex font-semibold gap-0.5 " href='/'>
@@ -39,7 +39,6 @@ export function TopBar() {
           <div className="hidden md:flex items-center space-x-8">
             <NavLink href="/problemset">Problems</NavLink>
             <NavLink href="/discussion">Discussion</NavLink>
-            <NavLink href="/contest">Contest</NavLink>
           </div>
 
 

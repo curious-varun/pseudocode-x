@@ -1,6 +1,6 @@
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import ChatWidget from "@/components/chat-widget-gemini";
 import { getProblemWithTestCaseById, GetProblemWithTestCaseByIdType } from "@/db/problem";
+import { TestCaseRenderer } from "@/components/test-case-render";
 import { notFound } from "next/navigation";
 import {
   Tabs,
@@ -11,57 +11,64 @@ import {
 import MarkdownRenderer from "@/components/markdown-renderer";
 import { CodingEditor } from "@/components/coding-editor";
 import { RenderSolution } from "@/components/render-solution";
+import { ScrollArea } from "@/components/ui/scroll-area"; // ✅ Correct import
 
 export default async function ProblemPage({ params }: { params: { slug: string } }) {
   const data = await getProblemWithTestCaseById(params.slug);
 
   if (!data) return notFound();
 
-
   const { title, description, difficulty, testCases } = data;
+
+
 
   return (
     <div className="px-6 h-[calc(100vh-3rem)] ">
       <ResizablePanelGroup direction="horizontal" className="pt-1">
         <ResizablePanel maxSize={50} minSize={20}>
           <Tabs defaultValue="description" className="flex-1">
-            <TabsList className=" w-full justify-start gap-2">
+            <TabsList className="w-full justify-start gap-2">
               <TabsTrigger className="text-xs" value="description">Description</TabsTrigger>
-              <TabsTrigger className="text-xs" value="solution">
-                solution
-              </TabsTrigger>
-              <TabsTrigger className="text-xs" value="discussion">discussion</TabsTrigger>
+              <TabsTrigger className="text-xs" value="solution">Solution</TabsTrigger>
             </TabsList>
             <TabsContent value="description">
-              <MarkdownRenderer content={description.replace(/\\n/g, "\n")} />
+              <ScrollArea className="h-[calc(100vh-8rem)] w-full p-2">
+                <MarkdownRenderer content={description.replace(/\\n/g, "\n")} />
+                {/* @ts-ignore */}
+                <div className="max-w-[500px] ">
+                  <TestCaseRenderer testCases={testCases} />
+                </div>
+              </ScrollArea>
             </TabsContent>
             <TabsContent value="solution">
-              <RenderSolution problemId={"two-sum"} />
-            </TabsContent>
-            <TabsContent value="discussion">
-              discussion
+              <ScrollArea className="h-[calc(100vh-6rem)] w-full p-2">
+                <RenderSolution problemId={params.slug} />
+              </ScrollArea>
             </TabsContent>
           </Tabs>
         </ResizablePanel>
-        <ResizableHandle className="mx-3 hover:bg-blue-600  h-[calc(100vh-18rem)] my-auto" withHandle />
+        <ResizableHandle className="mx-3 hover:bg-blue-600 h-[calc(100vh-18rem)] my-auto" withHandle />
         <ResizablePanel minSize={60}>
           <Tabs defaultValue="code" className="flex-1">
-            <TabsList className=" w-full justify-start gap-2">
-              <TabsTrigger className="text-xs" value="code"> code </TabsTrigger>
-              <TabsTrigger className="text-xs" value="submissinos">submissinos</TabsTrigger>
+            <TabsList className="w-full justify-start gap-2">
+              <TabsTrigger className="text-xs" value="code">Code</TabsTrigger>
+              <TabsTrigger className="text-xs" value="submissions">Submissions</TabsTrigger>
             </TabsList>
             <TabsContent value="code">
-              {/* @ts-ignore */}
-              <CodingEditor description={description?.toString() || "No description available"} />
+              <ScrollArea className="h-[calc(100vh-6rem)] w-full p-2">
+                {/* @ts-ignore */}
+                <CodingEditor description={description?.toString() || "No description available"} />
+              </ScrollArea>
             </TabsContent>
-
-            <TabsContent value="submissinos">
-              submissinos
+            <TabsContent value="submissions">
+              <ScrollArea className="h-[calc(100vh-6rem)] w-full p-2">
+                Submissions
+              </ScrollArea>
             </TabsContent>
           </Tabs>
         </ResizablePanel>
-      </ResizablePanelGroup >
-    </div >
+      </ResizablePanelGroup>
+    </div>
   );
 }
 
