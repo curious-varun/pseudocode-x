@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import MarkdownRenderer from "@/components/markdown-renderer";
 import { decreaseShowSolutionPoint } from "@/actions";
 import { toast } from "sonner";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -16,16 +17,25 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export function RenderSolution({ solution, userId }: { solution: string; userId: string }) {
-  const [showSolution, setShowSolution] = useState(false);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [isPending, startTransition] = useTransition();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
+  // Get showSolution from URL instead of local state
+  const showSolution = searchParams.get("showSolution") === "true";
 
   async function handleShowSolution() {
     setOpenConfirmDialog(false);
     startTransition(async () => {
       const res = await decreaseShowSolutionPoint(userId);
       if (res.success) {
-        setShowSolution(true);
+        // Update URL with showSolution parameter
+        const params = new URLSearchParams(searchParams);
+        params.set("showSolution", "true");
+        router.push(`${pathname}?${params.toString()}`);
       } else {
         toast.error("Something went wrong while deducting points.");
       }
