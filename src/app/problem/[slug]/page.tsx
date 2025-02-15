@@ -2,25 +2,25 @@ import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/componen
 import { getProblemWithTestCaseById, GetProblemWithTestCaseByIdType } from "@/db/problem";
 import { TestCaseRenderer } from "@/components/test-case-render";
 import { notFound } from "next/navigation";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger, } from "@/components/ui/tabs"
 import MarkdownRenderer from "@/components/markdown-renderer";
 import { CodingEditor } from "@/components/coding-editor";
 import { RenderSolution } from "@/components/render-solution";
 import { ScrollArea } from "@/components/ui/scroll-area"; // ✅ Correct import
+import { auth } from "@/lib/auth";
+import { getUserSubmissions } from "@/db/submission";
+import { SubmissionTable } from "@/components/submission-render";
+import { getSolution } from "@/db/solution";
 
 export default async function ProblemPage({ params }: { params: { slug: string } }) {
-  const data = await getProblemWithTestCaseById(params.slug);
 
+  const session = await auth();
+  const data = await getProblemWithTestCaseById(params.slug); // Fetch problem details
   if (!data) return notFound();
-
+  if (!session?.user?.email) return <p>You need to log in to view submissions.</p>;
   const { title, description, difficulty, testCases } = data;
-
-
+  const submissions = await getUserSubmissions(session.user.email, title);
+  const solution = await getSolution(title)
 
   return (
     <div className="px-6 h-[calc(100vh-3rem)] ">
@@ -42,7 +42,10 @@ export default async function ProblemPage({ params }: { params: { slug: string }
             </TabsContent>
             <TabsContent value="solution">
               <ScrollArea className="h-[calc(100vh-6rem)] w-full p-2">
-                <RenderSolution problemId={params.slug} />
+                <RenderSolution
+                  userId={session.user.email}
+                  solution={solution?.solution || "# do not have solution right now"}
+                />
               </ScrollArea>
             </TabsContent>
           </Tabs>
@@ -62,7 +65,7 @@ export default async function ProblemPage({ params }: { params: { slug: string }
             </TabsContent>
             <TabsContent value="submissions">
               <ScrollArea className="h-[calc(100vh-6rem)] w-full p-2">
-                Submissions
+                <SubmissionTable submissions={submissions} />
               </ScrollArea>
             </TabsContent>
           </Tabs>

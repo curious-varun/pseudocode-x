@@ -22,14 +22,28 @@ export const { auth, handlers } = NextAuth({
         const username = generateUsername(user.email ? user.email : null);
 
         if (!existingUser) {
-          await prisma.user.create({
-            data: {
-              email: user.email!,
-              username,
-              name: user.name!,
-              image: user.image!,
-            },
-          })
+          if (user.email != null) {
+            await prisma.user.create({
+              data: {
+                id: user.email,
+                email: user.email!,
+                username,
+                name: user.name!,
+                image: user.image!,
+              },
+            })
+          }
+          else {
+            await prisma.user.create({
+              data: {
+                email: user.email!,
+                username,
+                name: user.name!,
+                image: user.image!,
+              },
+            })
+          }
+
         }
 
         return true
